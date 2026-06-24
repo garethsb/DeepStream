@@ -1979,7 +1979,9 @@ time_to_rtp_timestamp (gdouble time_ns, guint sample_rate)
     gdouble mask = 0x100000000;
     // We decrease one tick from the timestamp to prevent cases where the timestamp
     // lands up in the future due to calculation imprecision
-    timestamp = fmod(timestamp, mask) - 1;
+    // See https://github.com/NVIDIA/rivermax-dev-kit/blob/8b88d4b1f4949c4e6fcf8997cefcc443bca8cb74/source/services/legacy_util/rt_threads.cpp#L599-L609
+    timestamp -= 5;
+    timestamp = fmod(timestamp, mask);
     return timestamp;
 }
 
